@@ -1,46 +1,4 @@
-// import { Component, AfterViewInit } from '@angular/core';
-
-// @Component({
-//   selector: 'app-header',
-//   standalone: true,
-//   imports: [],
-//   templateUrl: './header.component.html',
-//   styleUrls: ['./header.component.scss']
-// })
-// export class HeaderComponent implements AfterViewInit {
-//   ngAfterViewInit(): void {
-//     const navLinks = document.querySelectorAll<HTMLAnchorElement>('nav .nav-menu a');
-
-//     navLinks.forEach((link: HTMLAnchorElement) => {
-//       link.addEventListener('click', (event: MouseEvent) => {
-//         event.preventDefault(); // Prevent default anchor behavior
-        
-//         // Remove 'active' class from all links' parent elements
-//         navLinks.forEach((lnk: HTMLAnchorElement) => {
-//           const parentElement = lnk.parentElement;
-//           if (parentElement) {
-//             parentElement.classList.remove('active');
-//           }
-//         });
-
-//         // Add 'active' class to the clicked link's parent element
-//         const parentElement = link.parentElement;
-//         if (parentElement) {
-//           parentElement.classList.add('active');
-//         }
-
-//         // Smoothly scroll to the target section
-//         const targetId = link.getAttribute('href')?.substring(1); // Get the target ID from href
-//         const targetElement = document.getElementById(targetId ?? '');
-//         if (targetElement) {
-//           targetElement.scrollIntoView({ behavior: 'smooth' });
-//         }
-//       });
-//     });
-//   }
-// }
-
-import { Component, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, Renderer2 } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -53,13 +11,20 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
   private observer: IntersectionObserver | null = null;
   private sections: HTMLElement[] = [];
   private navLinks: HTMLAnchorElement[] = [];
+  private mobileMenuIcon: HTMLElement | null = null;
+  private navMenu: HTMLElement | null = null;
+
+  constructor(private renderer: Renderer2) {}
 
   ngAfterViewInit(): void {
     this.sections = Array.from(document.querySelectorAll('section[id]'));
     this.navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('nav .nav-menu a'));
+    this.mobileMenuIcon = document.getElementById('mobile-menu-icon');
+    this.navMenu = document.querySelector('.nav-menu');
 
     this.setupIntersectionObserver();
     this.setupNavLinkClickListeners();
+    this.setupMobileMenuToggle();
   }
 
   ngOnDestroy(): void {
@@ -72,7 +37,7 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
     const options = {
       root: null,
       rootMargin: '0px',
-      threshold: 0.7, // Adjust this value to change when the section is considered "active"
+      threshold: 0.7,
     };
 
     this.observer = new IntersectionObserver((entries) => {
@@ -90,12 +55,16 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
 
   private setupNavLinkClickListeners(): void {
     this.navLinks.forEach((link: HTMLAnchorElement) => {
-      link.addEventListener('click', (event: MouseEvent) => {
+      this.renderer.listen(link, 'click', (event: Event) => {
         event.preventDefault();
         const targetId = link.getAttribute('href')?.substring(1);
         const targetElement = document.getElementById(targetId ?? '');
         if (targetElement) {
           targetElement.scrollIntoView({ behavior: 'smooth' });
+        }
+        // Close mobile menu when a link is clicked
+        if (this.navMenu) {
+          this.renderer.removeClass(this.navMenu, 'show');
         }
       });
     });
@@ -106,11 +75,50 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
       const parentElement = link.parentElement;
       if (parentElement) {
         if (link.getAttribute('href') === `#${sectionId}`) {
-          parentElement.classList.add('active');
+          this.renderer.addClass(parentElement, 'active');
         } else {
-          parentElement.classList.remove('active');
+          this.renderer.removeClass(parentElement, 'active');
         }
       }
     });
   }
+
+  private setupMobileMenuToggle(): void {
+    if (this.mobileMenuIcon && this.navMenu) {
+      this.renderer.listen(this.mobileMenuIcon, 'click', (event: Event) => {
+        event.stopPropagation(); // Prevent the click from propagating to the document
+        this.toggleMobileMenu();
+      });
+  
+      this.renderer.listen('document', 'click', (event: Event) => {
+        if (!this.navMenu?.contains(event.target as Node) && 
+            !this.mobileMenuIcon?.contains(event.target as Node)) {
+          this.closeMobileMenu();
+        }
+      });
+    }
+  }
+  
+  private toggleMobileMenu(): void {
+    if (this.navMenu) {
+      if (this.navMenu.classList.contains('show')) {
+        this.closeMobileMenu();
+      } else {
+        this.openMobileMenu();
+      }
+    }
+  }
+  
+  private openMobileMenu(): void {
+    if (this.navMenu) {
+      this.renderer.addClass(this.navMenu, 'show');
+    }
+  }
+  
+  private closeMobileMenu(): void {
+    if (this.navMenu) {
+      this.renderer.removeClass(this.navMenu, 'show');
+    }
+  }
+  
 }

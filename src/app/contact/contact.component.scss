@@ -1,9 +1,11 @@
+// Contact Styles
+
 #contact {
     padding: 4em 2em;
     text-align: center;
     font-family: 'Montserrat', sans-serif;
-    background-color: #f9f9f9; /* Light background color for contrast */
-    border-top: 1px solid #ddd; /* Subtle border for separation */
+    background-color: #f9f9f9;
+    border-top: 1px solid #ddd;
 }
 
 #contact h2 {
@@ -15,14 +17,14 @@
 #contact form {
     max-width: 600px;
     margin: 0 auto;
-    background-color: #fff; /* White background for the form */
+    background-color: #fff;
     padding: 2em;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 #contact input, #contact textarea {
-    width: calc(100% - 2em); /* Adjust width to account for padding */
+    width: calc(100% - 2em);
     padding: 1em;
     margin: 0.5em 0;
     border: 1px solid #ddd;
@@ -32,26 +34,26 @@
 }
 
 #contact textarea {
-    height: 150px; /* Increase height for better readability */
-    resize: vertical; /* Allow users to resize the textarea vertically */
+    height: 150px;
+    resize: vertical;
     font-size: 1em;
 }
 
 #contact .btn {
     background: #007bff;
     color: #fff;
-    padding: 0.75em 1.5em; /* Adjust padding for better button size */
+    padding: 0.75em 1.5em;
     text-decoration: none;
     border-radius: 5px;
     border: none;
     font-size: 1em;
-    cursor: pointer; /* Show pointer cursor for button */
+    cursor: pointer;
     transition: background 0.3s ease, transform 0.3s ease;
 }
 
 #contact .btn:hover {
     background: #0056b3;
-    transform: translateY(-2px); /* Slight lift effect */
+    transform: translateY(-2px);
 }
 
 #contact .btn:disabled {
@@ -75,25 +77,23 @@
 .social-links {
     margin-top: 2em;
     display: flex;
-    justify-content: center; /* Center social icons */
-    gap: 15px; /* Space between icons */
+    justify-content: center;
+    gap: 15px;
 }
 
 .social-links a {
     color: #333;
-    font-size: 2em; /* Larger icons */
+    font-size: 2em;
     transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .social-links a:hover {
-    color: #000000; /* Darker shade for hover effect */
-    //transform: scale(1.1); /* Slight zoom effect */
+    color: #000000;
 }
 
-
 .linkedInstyle a {
-    color: #0077b5; /* LinkedIn brand color */
-    font-size: 2.2em; /* Slightly larger for emphasis */
+    color: #0077b5;
+    font-size: 2.2em;
 }
 
 .linkedInstyle a:hover {
@@ -101,4 +101,85 @@
     color: #005582; 
 }
 
+/* Responsive styles */
+@media screen and (max-width: 1024px) {
+    #contact {
+        padding: 3em 1.5em;
+    }
 
+    #contact form {
+        max-width: 90%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #contact {
+        padding: 2.5em 1em;
+    }
+
+    #contact h2 {
+        font-size: 1.3em;
+    }
+
+    #contact form {
+        padding: 1.5em;
+    }
+
+    #contact input, #contact textarea {
+        font-size: 0.9em;
+    }
+
+    .social-links a {
+        font-size: 1.8em;
+    }
+
+    .linkedInstyle a {
+        font-size: 2em;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #contact {
+        padding: 2em 0.5em;
+    }
+
+    #contact h2 {
+        font-size: 1.2em;
+    }
+
+    #contact form {
+        padding: 1em;
+    }
+
+    #contact input, #contact textarea {
+        font-size: 0.8em;
+        padding: 0.8em;
+    }
+
+    #contact textarea {
+        height: 120px;
+    }
+
+    #contact .btn {
+        padding: 0.6em 1.2em;
+        font-size: 0.9em;
+    }
+
+    .error-message {
+        font-size: 0.7em;
+    }
+
+    .social-links {
+        gap: 10px;
+    }
+
+    .social-links a {
+        font-size: 1.6em;
+        display: inline-block; /* Ensure that icons are displayed */
+
+    }
+
+    .linkedInstyle a {
+        font-size: 1.8em;
+    }
+}

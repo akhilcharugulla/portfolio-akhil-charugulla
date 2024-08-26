@@ -18,7 +18,7 @@ export class ExperienceComponent {
   experienceItems = [
     {
       title: 'Software Engineer Intern at Copart',
-      date: 'Hyderabad, India | Jan 2024 – Present',
+      date: 'Dallas, Texas | Jan 2024 – Present',
       link: 'https://www.copart.com/',
       details:[
           "Created and customized 15+ dynamic Angular components and downgraded them to utilize in AngularJS pages.",
